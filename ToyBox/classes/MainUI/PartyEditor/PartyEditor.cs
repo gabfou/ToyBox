@@ -82,6 +82,13 @@ namespace ToyBox {
                 ActionButton("Recruit".localize().cyan(), () => { charToRecruit = ch; }, Width(150));
                 Space(25);
                 buttonCount++;
+            } 
+            if (!player.AllCharacters.Contains(ch)) {
+                ActionButton("Spawn".localize().cyan(),
+                             () => { Actions.spawnUnitAroundPosition(ch.Blueprint, 1, ch.Position); },
+                             Width(150));
+                Space(25);
+                buttonCount++;
             }
             if (player.AllCharacters.Contains(ch) && !ch.IsMainCharacter && !ch.IsStoryCompanion()) {
                 ActionButton("Unrecruit".cyan(),

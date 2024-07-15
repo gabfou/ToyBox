@@ -143,18 +143,16 @@ namespace ToyBox {
             }
         }
 
-        public static void SpawnUnit(BlueprintUnit unit, int count) {
-            var worldPosition = Game.Instance.ClickEventsController.WorldPosition;
-            //           var worldPosition = Game.Instance.Player.MainCharacter.Value.Position;
+        public static void spawnUnitAroundPosition(BlueprintUnit unit, int count, Vector3 position) {
             if (!(unit == null)) {
                 for (var i = 0; i < count; i++) {
-                    Vector3 spawnPosition = worldPosition;
+                    Vector3 spawnPosition = position;
                     try {
                         var offset = 5f * UnityEngine.Random.insideUnitSphere;
                         spawnPosition = new(
-                            worldPosition.x + offset.x,
-                            worldPosition.y,
-                            worldPosition.z + offset.z);
+                            position.x + offset.x,
+                            position.y,
+                            position.z + offset.z);
                     } catch {
                     } finally {
                         Game.Instance.EntityCreator.SpawnUnit(unit, spawnPosition, Quaternion.identity, Game.Instance.State.LoadedAreaState.MainState);
@@ -162,6 +160,13 @@ namespace ToyBox {
                 }
             }
         }
+
+        public static void SpawnUnit(BlueprintUnit unit, int count) {
+            var worldPosition = Game.Instance.ClickEventsController.WorldPosition;
+
+            spawnUnitAroundPosition(unit, count, worldPosition);
+        }
+
         public static void HandleChangeParty() {
             if (Game.Instance.CurrentMode == GameModeType.GlobalMap) {
                 var partyCharacters = Game.Instance.Player.Party.Select(u => (UnitReference)u).ToList(); ;
